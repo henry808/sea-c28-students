@@ -11,7 +11,8 @@ if __name__ == '__main__':
     index = int(raw_input(u"Enter a number for the position of the fruit you want: "))
 
     if index > 0 and index <= len(fruit_list):
-        print(u"The fruit in the %i position is %s" % (index, fruit_list[index - 1]))
+        print(u"The fruit in the %i position is %s" %
+            (index, fruit_list[index - 1]))
     else:
         print(u"Position out of range.")
 
@@ -20,4 +21,7 @@ if __name__ == '__main__':
     fruit_list.insert(0, u"Lime")
     print(fruit_list)
 
+    for fruit in fruit_list:
+        if(fruit[0] == u"P"):
+           print(fruit)
 
