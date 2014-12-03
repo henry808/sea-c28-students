@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
+# Define the original list
 fruit_list = [u"Apples", u"Pears", u"Oranges", u"Peaches"]
 
 
 if __name__ == '__main__':
+
+    # First series of actions:
     print(fruit_list)
     fruit = unicode(raw_input(u"Enter a new fruit: "))
     fruit_list.append(fruit)
@@ -23,5 +26,30 @@ if __name__ == '__main__':
 
     for fruit in fruit_list:
         if(fruit[0] == u"P"):
-           print(fruit)
+            print(fruit)
+    print("")
+
+    # Second series of actions:
+    fruit_list2 = fruit_list[:]
+    print(fruit_list2)
+    del fruit_list2[-1:]
+    print(fruit_list2)
+    fruit = unicode(raw_input(u"Enter a fruit to delete: "))
+    fruit_list2.remove(fruit)
+    print(fruit_list2)
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
