@@ -2,7 +2,10 @@
 
 # ROT13 ENCRYPTION MODULE
 #
-# This module.
+# This module performs ROT13 to a string. It will replace every letter
+# in the string to 13th letter after in in the alphabet and wraps around at z.
+
+from string import maketrans
 
 
 def rot13(text):
@@ -21,7 +24,8 @@ def rot13(text):
     if text is None:
         return None
 
-    table = None
+    table = maketrans("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                      "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM")
     return text.translate(table)
 
 
@@ -34,7 +38,14 @@ if __name__ == '__main__':
     assert rot13("") == ""
     assert rot13("01234") == "01234"
     assert rot13("^$&*") == "^$&*"
-    assert rot13("This is a test") == "This is a test"
 
-    print(rot13("This is a test"))
+    # Testing ROT13
+    # check to see if shift works and make sure that all nonstring
+    # characters are preserved.
+    assert rot13("Hello") == "Uryyb"
+    assert rot13(rot13("Hello")) == "Hello"
+    assert rot13("Why did the chicken cross the road?") == "Jul qvq gur " \
+        "puvpxra pebff gur ebnq?"
 
+    assert rot13(rot13("Why did the chicken cross the road?")) == "Why " \
+        "did the chicken cross the road?"
