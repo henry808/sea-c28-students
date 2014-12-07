@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
     if index > 0 and index <= len(fruit_list):
         print(u"The fruit in the %i position is %s" %
-            (index, fruit_list[index - 1]))
+              (index, fruit_list[index - 1]))
     else:
         print(u"Position out of range.")
 
@@ -31,28 +31,28 @@ if __name__ == '__main__':
     print("")
 
     # Second series of actions:
-    # fruit_list2 = fruit_list[:]
-    # print(fruit_list2)
-    # del fruit_list2[-1:]
-    # print(fruit_list2)
-    # fruit = unicode(raw_input(u"Enter a fruit to delete: "))
-    # fruit_list2.remove(fruit)
-    # print(fruit_list2)
-    # print("")
+    fruit_list2 = fruit_list[:]
+    print(fruit_list2)
+    del fruit_list2[-1:]
+    print(fruit_list2)
+    fruit = unicode(raw_input(u"Enter a fruit to delete: "))
+    fruit_list2.remove(fruit)
+    print(fruit_list2)
+    print("")
 
     # Third series of actions:
-    # fruit_list3 = fruit_list[:]
-    # print(fruit_list3)
-    # for fruit in fruit_list:
-    #     while True:
-    #         like = unicode(raw_input(u"Do you like %s? " % fruit))
-    #         if like == u"no":
-    #             fruit_list3.remove(fruit)
-    #             break
-    #         elif like == u"yes":
-    #             break
-    # print(fruit_list3)
-    # print("")
+    fruit_list3 = fruit_list[:]
+    print(fruit_list3)
+    for fruit in fruit_list:
+        while True:
+            like = unicode(raw_input(u"Do you like %s? " % fruit))
+            if like == u"no":
+                fruit_list3.remove(fruit)
+                break
+            elif like == u"yes":
+                break
+    print(fruit_list3)
+    print("")
 
     # Fourth series of actions:
     fruit_list4 = fruit_list[:]
