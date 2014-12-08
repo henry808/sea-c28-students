@@ -9,7 +9,7 @@ import random
 from string import maketrans
 
 if __name__ == '__main__':
-    f = codecs.open('sherlock.txt')
+    f = codecs.open('sherlock_small.txt')
     text_data = f.read()
     f.close()
 
@@ -22,11 +22,9 @@ if __name__ == '__main__':
     # Make into a list of words
     strlist = text_data.split()
 
-    trigramtable = {}
     # build trigramtable: a dictionary of all trigrams with lists of words
     trigramtable = {}
     for i in range(len(strlist)-2):
-        print i
         k = "%s %s" % (strlist[i], strlist[i + 1])
         word = strlist[i + 2]
         if k in trigramtable.keys():
@@ -62,7 +60,7 @@ if __name__ == '__main__':
 
     # Capitalize all I's
     for i in range(len(text_string)):
-        if text_string[i] == 'i' :
+        if text_string[i] == 'i':
             text_string[i] = 'I'
 
     # Turn the list of words into sentences
