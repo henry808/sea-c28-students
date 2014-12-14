@@ -3,35 +3,26 @@
 # dict_set.py
 #
 # Create dictionaries and sets and manipulate them.
-
+from __future__ import print_function
 
 if __name__ == '__main__':
     d = {'name': 'Chris',
          'city': 'Seattle',
          'cake': 'Chocolate'}
     # print dictionary
-    for k, v in d.items():
-        print(k)
-        print(v)
-    print("\n")
+    print(d)
 
     # delete entry
     d.pop('cake')
 
     # print dictionary
-    for k, v in d.items():
-        print(k)
-        print(v)
-    print("\n")
+    print(d)
 
     # add entry
     d['fruit'] = 'Mango'
 
     # print dictionary
-    for k, v in d.items():
-        print(k)
-        print(v)
-    print("\n")
+    print(d)
 
     # print keys and values
     print(d.keys())
@@ -39,9 +30,9 @@ if __name__ == '__main__':
     print("\n")
 
     # print whether or not cake is a key in the dictionary.
-    print 'cake' in d.keys()
+    print ('cake' in d)
     # print whether or not Mango is a value in the dictionary.
-    print 'Mango' in d.values()
+    print ('Mango' in d.values())
 
     # Make a dictionary with 0..15 as keys and hex equivelant as values
     intlist = range(16)
@@ -54,11 +45,11 @@ if __name__ == '__main__':
 
     print(inthexdict.items())
 
-    # Using same dictionary, change values to key # of a's
-    for k in inthexdict.keys():
-        inthexdict[k] = 'a' * k
-
-    print(inthexdict.items())
+    # Using part 1 dictionary, count # of a's in the values and set
+    #   to the new value.
+    for k in d:
+        d[k] = d[k].count('a')
+    print(d)
 
     # Sets s2, s3 and s4 contain #'s from
     #     0 through 20, divisible 2, 3 and 4.
@@ -66,11 +57,11 @@ if __name__ == '__main__':
     s3 = set()
     s4 = set()
     for i in range(21):
-        if i / 2 == float(i) / 2:
+        if i % 2 == 0:
             s2.add(i)
-        if i / 3 == float(i) / 3:
+        if i % 3 == 0:
             s3.add(i)
-        if i / 4 == float(i) / 4:
+        if i % 4 == 0:
             s4.add(i)
     # Display sets
     print(s2)
@@ -78,9 +69,9 @@ if __name__ == '__main__':
     print(s4)
 
     # Display if s3 is a subset of s2
-    print s3.issubset(s2)
+    print(s3.issubset(s2))
     # Display if s4 is a subset of s2
-    print s4.issubset(s2)
+    print(s4.issubset(s2))
 
     # Create a set of letters of Python
     setofstrings = set("Python")
@@ -90,5 +81,5 @@ if __name__ == '__main__':
     # Create a frozenset of letters in 'marathon'
     fsetofstrings = set('marathon')
     print(fsetofstrings)
-    print setofstrings.union(fsetofstrings)
-    print setofstrings.intersection(fsetofstrings)
+    print(setofstrings.union(fsetofstrings))
+    print(setofstrings.intersection(fsetofstrings))
