@@ -6,14 +6,6 @@
 from collections import OrderedDict
 
 
-def isfloat(string):
-    try:
-        float(string)
-        return True
-    except ValueError:
-        return False
-
-
 def printlist():
     """Print a list of donor names
     """
@@ -66,15 +58,18 @@ def sendthankyou():
 
     # Add amount to the donating person's donation list.
     while not(quiting):
-        promptstr = u"How much did they donate (q to exit to menu)?"
-        donoramount = unicode(raw_input(promptstr))
-        if donoramount == u'q':
-            quiting = True
-        elif isfloat(donoramount):
-            addamounttolist(donor, float(donoramount))
-            generateemail(donor)
-            break
-        else:
+        try:
+            promptstr = u"How much did they donate (q to exit to menu)?"
+            donoramount = unicode(raw_input(promptstr))
+            if donoramount == u'q':
+                quiting = True
+                break
+            else:
+                addamounttolist(donor, float(donoramount))
+                generateemail(donor)
+                break
+        except ValueError:
+            print(u"Illegal value. Please enter in a number.")
             continue
     # print(donordict)
 
