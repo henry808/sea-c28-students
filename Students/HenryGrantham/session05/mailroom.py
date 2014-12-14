@@ -2,7 +2,7 @@
 
 # Mailroom
 #
-# Sets up and sends out emails to doners.
+# Maintains a list of donors and sends out emails to them.
 from collections import OrderedDict
 
 
@@ -15,18 +15,22 @@ def printlist():
 
 def addnametolist(name):
     """Add a name to the list
+
+    Also sets up an empty list to add amounts to.
     """
     donordict[name] = []
 
 
 def addamounttolist(name, amount):
-    """Add amount to the list of amounts for a donor
+    """Add amount to the end of a list of amounts for a donor
     """
     donordict[name].append(amount)
 
 
 def generateemail(donor):
     """Print email to terminal
+
+    Store an email in symbol email and print it to the screen
     """
     email = "Hi %s,\nThank you for your generous donation of %.2f\n\n" \
             "Thanks,\nGoodbye\n\n" \
@@ -36,6 +40,21 @@ def generateemail(donor):
 
 def sendthankyou():
     """Takes steps to add donor or email thank you.
+
+    This does two things:
+    1) Prompts uses for a name.
+    If user puts in a name, it will either add the name into the donor list
+    or if the person is already in the list, it will select that donor.
+    The name has to be a mix of letters and spaces.
+    If user selects list, it will print out a list of names already in.
+    If user selects q, it will quit out to main menu.
+
+    2) Prompts user for an amount
+    If the user puts in an illegal value (not convertable to a float),
+    tell them it is illegal and then reprompt
+    If user selects q, it will quit out to main menu. If it is a new donor,
+    and they quit, the donor will have an empty list of donation amounts.
+    If the value is legal then print an email.
     """
     quiting = False  # if user quits, set this to True
     while not(quiting):
@@ -54,8 +73,6 @@ def sendthankyou():
         else:
             continue
 
-    # print(donordict)
-
     # Add amount to the donating person's donation list.
     while not(quiting):
         try:
@@ -71,7 +88,6 @@ def sendthankyou():
         except ValueError:
             print(u"Illegal value. Please enter in a number.")
             continue
-    # print(donordict)
 
 
 def createreport():
@@ -84,6 +100,8 @@ def createreport():
     average donation
 
     and is sorted by total donations.
+
+    The first column will scale to the size of the donor's name.
     """
     # create a sorted donordict sorted by total of amounts.
     sort = sorted(donordict.items(), key=lambda t: sum(t[1]))
@@ -129,6 +147,7 @@ if __name__ == '__main__':
     # Menu with three choices
     while True:
         choice = unicode(raw_input(
+            u"Main Menu\n"
             u"1 Send a Thank You\n"
             u"2 Create a Report\n"
             u"Please choose 1,2, or q to quit:"))
