@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 
-# count_evens
+# count_evens.py
 #
 # This module contains one function that returns the number of even
 # numbers in a list.
 
 
 def count_evens(nums):
-   return len([x  for x in nums if x % 2 == 0])
+    """Return the # of even numbers in a list of ints.
+    """
+    return len([x for x in nums if x % 2 == 0])
 
 
 if __name__ == '__main__':
