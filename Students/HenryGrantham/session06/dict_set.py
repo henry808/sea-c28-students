@@ -62,31 +62,10 @@ if __name__ == '__main__':
     print(s3)
     print(s4)
 
-
-    divisable_sets = [{x for x in range(21) if x % i == 0} for i in (range(2,5)]
-
-    # divisable_sets = []
-
-    # for i in (range(2,5)):
-    #     divisable_sets.append({x for x in range(21) if x % i == 0})
-
+    # Build a sequence of divisable sets (Extra credit)
+    # Test it for 2 through 6
+    divisable_sets = [{x for x in range(21) if x % i == 0}
+                      for i in (range(2, 7))]
 
     # Display sets
     print(divisable_sets)
-
-
-    # Display if s3 is a subset of s2
-    print(s3.issubset(s2))
-    # Display if s4 is a subset of s2
-    print(s4.issubset(s2))
-
-    # Create a set of letters of Python
-    setofstrings = set("Python")
-    setofstrings.add('i')
-    print(setofstrings)
-
-    # Create a frozenset of letters in 'marathon'
-    fsetofstrings = set('marathon')
-    print(fsetofstrings)
-    print(setofstrings.union(fsetofstrings))
-    print(setofstrings.intersection(fsetofstrings))
