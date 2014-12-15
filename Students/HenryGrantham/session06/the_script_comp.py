@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
-# the_script.py
+# the_script_comp.py
 #
 # This module contains one function that returns the number of even
 # numbers in a list.
+#
+# Uses a comprehension to do the 'work'.
+
 import sys
 import codecs
 
@@ -25,8 +28,7 @@ if __name__ == '__main__':
 
     str_list = text_data.split('\n')
 
-    text_data = '\n'.join(map(lambda text: text.strip(), str_list))
-    # text_data = '\n'.join([text.strip() for text in str_list])
+    text_data = '\n'.join([text.strip() for text in str_list])
 
     print(u"Your file has been cleaned of leading"
           u" and trailing spaces.\n\n")
