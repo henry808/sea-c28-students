@@ -15,8 +15,7 @@ class Element(object):
     An html element for rendering.
     """
     indent = "    "
-    beg_tag = "<>\n"
-    end_tag = "</>\n"
+    tag = ""
 
     def __init__(self, element=None):
         self.content = []
@@ -27,7 +26,7 @@ class Element(object):
         self.content.append(element)
 
     def render(self, file_out, ind=""):
-        file_out.write("{}{}".format(ind, self.beg_tag))
+        file_out.write("{}<{}>\n".format(ind, self.tag))
         if type(self) == Element:
             for text in self.content:
                 file_out.write("{}{}{}".format(ind, self.indent, text))
@@ -37,27 +36,48 @@ class Element(object):
             file_out.write("{}{}{}".format(ind, self.indent, self.content[0]))
             file_out.write("\n")
         else:
-            print self.content
             for content in self.content:
                 content.render(file_out, self.indent + ind)
-        file_out.write("{}{}".format(ind, self.end_tag))
+        file_out.write("{}</{}>\n".format(ind, self.tag))
 
 
 class Body(Element):
     """A body html element
     """
-    beg_tag = "<body>\n"
-    end_tag = "</body>\n"
+    tag = "body"
 
 
 class P(Element):
-    """A p html element
+    """A P html element
     """
-    beg_tag = "<p>\n"
-    end_tag = "</p>\n"
+    tag = "p"
+
 
 class Html(Element):
-    """A p html element
+    """A Html element
     """
-    beg_tag = "<html>\n"
-    end_tag = "</html>\n"
+    tag = "html"
+
+
+class Head(Element):
+    """A Head html element
+    """
+    tag = "head"
+
+
+class OneLineTag(Element):
+    """A OneLineTag html element
+    """
+    tag = "OneLineTag"
+
+
+class Title(Element):
+    """A OneLineTag html element
+    """
+    tag = "title"
+
+    def render(self, file_out, ind=""):
+        file_out.write("{}<{}>".format(ind, self.tag))
+        file_out.write("{}".format(self.content[0]))
+        file_out.write("</{}>\n".format(self.tag))
+
