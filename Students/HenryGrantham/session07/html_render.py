@@ -17,16 +17,22 @@ class Element(object):
     indent = "    "
     tag = ""
 
-    def __init__(self, element=None):
+    def __init__(self, element=None, **kwargs):
         self.content = []
         if not (element is None):
             self.content.append(element)
+        self.attributes = kwargs
 
     def append(self, element):
         self.content.append(element)
 
     def render(self, file_out, ind=""):
-        file_out.write("{}<{}>\n".format(ind, self.tag))
+        if not(len(self.attributes) == 0):
+            att_list = ["{}={}".format(k, self.attributes[k]) for k in self.attributes]
+            att_string = "; ".join(att_list)
+        else:
+            att_string = ''
+        file_out.write("{}<{}{}>\n".format(ind, self.tag, att_string))
         if type(self) == Element:
             for text in self.content:
                 file_out.write("{}{}{}".format(ind, self.indent, text))
