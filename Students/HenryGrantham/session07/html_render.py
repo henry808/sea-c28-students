@@ -22,13 +22,14 @@ class Element(object):
         if not (element is None):
             self.content.append(element)
         self.attributes = kwargs
+        super(Element, self).__init__()
 
     def append(self, element):
         self.content.append(element)
 
     def render(self, file_out, ind=""):
         if not(len(self.attributes) == 0):
-            att_list = ["{}={}".format(k, self.attributes[k]) for k in self.attributes]
+            att_list = [' {}="{}"'.format(k, self.attributes[k]) for k in self.attributes]
             att_string = "; ".join(att_list)
         else:
             att_string = ''
@@ -43,7 +44,14 @@ class Element(object):
             file_out.write("\n")
         else:
             for content in self.content:
-                content.render(file_out, self.indent + ind)
+                print type(content)
+                if isinstance(content, unicode):
+                    print(" Content is %s" % content)
+                    file_out.write("{}{}{}".format(ind, self.indent, content))
+                    file_out.write("\n")
+                else:
+                    print(" Content is %s" % content)
+                    content.render(file_out, self.indent + ind)
         file_out.write("{}</{}>\n".format(ind, self.tag))
 
 
@@ -76,14 +84,55 @@ class OneLineTag(Element):
     """
     tag = "OneLineTag"
 
+    def render(self, file_out, ind=""):
+        if not(len(self.attributes) == 0):
+            att_list = [' {}="{}"'.format(k, self.attributes[k])
+                        for k in self.attributes]
+            att_string = "; ".join(att_list)
+        else:
+            att_string = ''
+        file_out.write("{}<{} {}>".format(ind, self.tag, att_string))
+        file_out.write("{}".format(self.content[0]))
+        file_out.write("</{}>\n".format(self.tag))
 
-class Title(Element):
+
+class Title(OneLineTag):
     """A OneLineTag html element
     """
     tag = "title"
 
-    def render(self, file_out, ind=""):
-        file_out.write("{}<{}>".format(ind, self.tag))
-        file_out.write("{}".format(self.content[0]))
-        file_out.write("</{}>\n".format(self.tag))
 
+class SelfClosingTag(Element):
+    """A OneLineTag html element
+    """
+    tag = "SelfClosingTag"
+
+    def render(self, file_out, ind=""):
+        if not(len(self.attributes) == 0):
+            att_list = [' {}="{}"'.format(k, self.attributes[k])
+                        for k in self.attributes]
+            att_string = "; ".join(att_list)
+        else:
+            att_string = ''
+        file_out.write("{}<{}{}/>\n".format(ind, self.tag, att_string))
+
+
+class Hr(SelfClosingTag):
+    """A Hr element ()
+    """
+    tag = "hr"
+
+
+class Br(SelfClosingTag):
+    """A Br element ()
+    """
+    tag = "br"
+
+
+class A(Element):
+    """A link element
+    """
+    tag = "a"
+
+    def __init__(self, link, content):
+        super(A, self).__init__(unicode(content), href=link)
