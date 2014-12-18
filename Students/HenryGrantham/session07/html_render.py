@@ -44,13 +44,10 @@ class Element(object):
             file_out.write("\n")
         else:
             for content in self.content:
-                print type(content)
                 if isinstance(content, unicode):
-                    print(" Content is %s" % content)
                     file_out.write("{}{}{}".format(ind, self.indent, content))
                     file_out.write("\n")
                 else:
-                    print(" Content is %s" % content)
                     content.render(file_out, self.indent + ind)
         file_out.write("{}</{}>\n".format(ind, self.tag))
 
@@ -91,7 +88,7 @@ class OneLineTag(Element):
             att_string = "; ".join(att_list)
         else:
             att_string = ''
-        file_out.write("{}<{} {}>".format(ind, self.tag, att_string))
+        file_out.write("{}<{}{}>".format(ind, self.tag, att_string))
         file_out.write("{}".format(self.content[0]))
         file_out.write("</{}>\n".format(self.tag))
 
@@ -118,15 +115,15 @@ class SelfClosingTag(Element):
 
 
 class Hr(SelfClosingTag):
-    """A Hr element ()
+    """A Hr element (horizontal rule)
     """
-    tag = "hr"
+    tag = "hr "
 
 
 class Br(SelfClosingTag):
-    """A Br element ()
+    """A Br element ( linebreak)
     """
-    tag = "br"
+    tag = "br "
 
 
 class A(Element):
@@ -136,3 +133,25 @@ class A(Element):
 
     def __init__(self, link, content):
         super(A, self).__init__(unicode(content), href=link)
+
+
+class H(OneLineTag):
+    """A header element
+    """
+    tag = "h"
+
+    def __init__(self, integer, element=None, **kwargs):
+        self.tag = "{}{}".format(self.tag, integer)
+        super(H, self).__init__(element, **kwargs)
+
+
+class Ul(Element):
+    """An unordered element
+    """
+    tag = "ul"
+
+
+class Li(Element):
+    """A list element
+    """
+    tag = "li"
