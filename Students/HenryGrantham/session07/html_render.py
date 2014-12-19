@@ -26,8 +26,6 @@ class Element(object):
 
     def getattributes(self):
         """Returns a string of attributes given an element
-
-        Returns 
         """
         # if not(len(self.attributes) == 0):
         if self.attributes:
