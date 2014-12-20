@@ -3,16 +3,22 @@
 
 Can be run with py.test
 """
-import math
+
 import pytest  # used for the exception testing
 
 import rot13
 
 
 def test_empty():
-
+    """An empty string should return another empty string.
+    """
     assert rot13.rot13("") == ""
-    # assert rot13(None) == None
+
+
+def test_None():
+
+    with pytest.raises(TypeError):
+        assert rot13(None) is None
 
 
 def test_numbers():
@@ -51,4 +57,4 @@ def test_doubleshift():
     """Test shift dones twice in a row to get back to original text.
     """
     text = "Why did the chicken cross the road?"
-    assert rot13.rot13(rot13(text)) == text
+    assert rot13.rot13(rot13.rot13(text)) == text
