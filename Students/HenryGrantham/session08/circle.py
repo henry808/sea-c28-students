@@ -12,10 +12,9 @@ class Circle(object):
         self._diameter = radius * 2.0
         self._area = math.pi * self.radius ** 2.0
 
-    # unbound method
-    @staticmethod
-    def from_diameter(diameter):
-        return Circle(diameter / 2.0)
+    @classmethod
+    def from_diameter(clss, diameter):
+        return clss(diameter / 2.0)
 
     def _getdiameter(self):
         return self._diameter
@@ -32,7 +31,6 @@ class Circle(object):
 
     def _setarea(self, area):
         raise AttributeError
-
 
     def _getarea(self):
         return self._area
