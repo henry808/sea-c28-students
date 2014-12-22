@@ -31,26 +31,28 @@ if __name__ == '__main__':
             trigramtable[k].append(word)
         else:
             trigramtable[k] = [word]
-    print trigramtable
+
     # Generating new text
     # generate starting pair of words by picking random key
     r = random.randint(0, len(trigramtable) - 1)
     text_string = random.choice(list(trigramtable.keys()))
     text_string = text_string.split()
     # loop through and add each trigram
-    for i in range(2, 200):
-        if len(text_string) <= i:
-            k = "%s %s" % (text_string[i - 2], text_string[i - 1])
-            if k in trigramtable:
-                text_string.append(random.choice(trigramtable[k]))
-            else:
-                # key does not exist put a '.' on the end and
-                # then generate a new key to start from
-                text_string.append('.')
-                words = random.choice(list(trigramtable.keys()))
-                words = words.split()
-                text_string.append(words[0])
-                text_string.append(words[1])
+    i = 2
+    while (i < 200):
+        k = "%s %s" % (text_string[i - 2], text_string[i - 1])
+        if k in trigramtable:
+            text_string.append(random.choice(trigramtable[k]))
+            i += 1  # added three words
+        else:
+            # key does not exist put a '.' on the end and
+            # then generate a new key to start from
+            text_string.append('.')
+            words = random.choice(list(trigramtable.keys()))
+            words = words.split()
+            text_string.append(words[0])
+            text_string.append(words[1])
+            i += 3  # added two words and period
     # Throw a '.' on the end if there is not one there already.
     if text_string[-1] == '.':
         pass
