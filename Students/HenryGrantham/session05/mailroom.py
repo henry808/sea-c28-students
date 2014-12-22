@@ -95,17 +95,17 @@ def createreport(donordict):
     sorteddonorlist = OrderedDict(sort)
 
     # Columns
-    col1 = 'Donor Name'
-    col2 = 'Total Donations'
-    col3 = '# of Donations'
-    col4 = 'Average Donations'
+    cols = ['Donor Name',
+            'Total Donations',
+            '# of Donations',
+            'Average Donations']
 
     # determine width of first column
     longestname = max(len(donor) for donor in donordict)
-    col1width = max(len(col1), longestname) + 1
+    col1width = max(len(cols[0]), longestname) + 1
 
     report = "{:{width}} | {:^17} | {:^16} | {:^19}\n"\
-        .format(col1, col2, col3, col4, width=col1width)
+        .format(*cols, width=col1width)
     for donor in sorteddonorlist:
         col1 = donor
         col2 = sum(sorteddonorlist[donor])
