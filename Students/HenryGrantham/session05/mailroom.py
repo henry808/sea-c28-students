@@ -6,39 +6,31 @@
 from collections import OrderedDict
 
 
-def printlist():
+def printlist(ddict):
     """Print a list of donor names
     """
-    for donor in donordict.keys():
+    for donor in ddict:
         print(donor)
 
 
-def addnametolist(name):
-    """Add a name to the list
-
-    Also sets up an empty list to add amounts to.
-    """
-    donordict[name] = []
-
-
-def addamounttolist(name, amount):
+def addamounttolist(ddict, name, amount):
     """Add amount to the end of a list of amounts for a donor
     """
-    donordict[name].append(amount)
+    ddict[name].append(amount)
 
 
-def generateemail(donor):
+def generateemail(ddict, donor):
     """Print email to terminal
 
     Store an email in symbol email and print it to the screen
     """
     email = "Hi %s,\nThank you for your generous donation of %.2f\n\n" \
             "Thanks,\nGoodbye\n\n" \
-            % (donor, donordict[donor][-1])
+            % (donor, ddict[donor][-1])
     print(email)
 
 
-def sendthankyou():
+def sendthankyou(donordict):
     """Takes steps to add donor or email thank you.
 
     This does two things:
@@ -56,6 +48,7 @@ def sendthankyou():
     and they quit, the donor will have an empty list of donation amounts.
     If the value is legal then print an email.
     """
+
     quiting = False  # if user quits, set this to True
     while not(quiting):
         promptstr = u"What is the donor's name (list for list; q for menu)?"
@@ -63,34 +56,28 @@ def sendthankyou():
         if donor == u'q':
             quiting = True
         elif donor == u'list':
-            printlist()
+            printlist(donordict)
             continue
-        elif donor in donordict:
-            break
         elif donor.replace(' ', '').isalpha():
-            addnametolist(donor)
+            donordict.setdefault(donor, [])
             break
-        else:
-            continue
 
     # Add amount to the donating person's donation list.
     while not(quiting):
+        promptstr = u"How much did they donate (q to exit to menu)?"
         try:
-            promptstr = u"How much did they donate (q to exit to menu)?"
             donoramount = unicode(raw_input(promptstr))
             if donoramount == u'q':
                 quiting = True
-                break
             else:
-                addamounttolist(donor, float(donoramount))
-                generateemail(donor)
+                addamounttolist(donordict, donor, float(donoramount))
+                generateemail(donordict, donor)
                 break
         except ValueError:
             print(u"Illegal value. Please enter in a number.")
             continue
 
-
-def createreport():
+def createreport(donordict):
     """Create a report with list of donors and amounts they donated.
 
     Table contains these four columns:
@@ -114,7 +101,7 @@ def createreport():
     col4 = 'Average Donations'
 
     # determine width of first column
-    longestname = max(len(donor) for donor in donordict.keys())
+    longestname = max(len(donor) for donor in donordict)
     col1width = max(len(col1), longestname) + 1
 
     report = "{:{width}} | {:^17} | {:^16} | {:^19}\n"\
@@ -141,7 +128,7 @@ if __name__ == '__main__':
                  u'Jim MCCaine': [11.50, 22.76],
                  u'Sally James': [200.00, 40.00],
                  u'Jill Kim': [35.00, 67.00],
-                 u'Anthony Wong Zinb': [100.00]
+                 u'Anthony Wong': [100.00]
                  }
 
     # Menu with three choices
@@ -152,9 +139,9 @@ if __name__ == '__main__':
             u"2 Create a Report\n"
             u"Please choose 1,2, or q to quit:"))
         if choice == '1':
-            sendthankyou()
+            sendthankyou(donordict)
         elif choice == '2':
-            createreport()
+            createreport(donordict)
         elif choice == 'q':
             print('Thank you for using mailroom.')
             break
