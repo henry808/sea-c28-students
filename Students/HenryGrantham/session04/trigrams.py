@@ -9,7 +9,7 @@ import random
 from string import maketrans
 
 if __name__ == '__main__':
-    f = codecs.open('sherlock_small.txt')
+    f = codecs.open('sherlock.txt')
     text_data = f.read()
     f.close()
 
@@ -27,31 +27,30 @@ if __name__ == '__main__':
     for i in range(len(strlist)-2):
         k = "%s %s" % (strlist[i], strlist[i + 1])
         word = strlist[i + 2]
-        if k in trigramtable.keys():
+        if k in trigramtable:
             trigramtable[k].append(word)
         else:
             trigramtable[k] = [word]
-
+    print trigramtable
     # Generating new text
-    for i in range(200):
-        if i == 0:
-            # generate starting pair of words by picking random key
-            r = random.randint(0, len(trigramtable) - 1)
-            text_string = random.choice(list(trigramtable.keys()))
-            text_string = text_string.split()
-        else:
-            if len(text_string) <= i:
-                k = "%s %s" % (text_string[i - 2], text_string[i - 1])
-                if k in trigramtable.keys():
-                    text_string.append(random.choice(trigramtable[k]))
-                else:
-                    # key does not exist put a '.' on the end and
-                    # then generate a new key to start from
-                    text_string.append('.')
-                    words = random.choice(list(trigramtable.keys()))
-                    words = words.split()
-                    text_string.append(words[0])
-                    text_string.append(words[1])
+    # generate starting pair of words by picking random key
+    r = random.randint(0, len(trigramtable) - 1)
+    text_string = random.choice(list(trigramtable.keys()))
+    text_string = text_string.split()
+    # loop through and add each trigram
+    for i in range(2, 200):
+        if len(text_string) <= i:
+            k = "%s %s" % (text_string[i - 2], text_string[i - 1])
+            if k in trigramtable:
+                text_string.append(random.choice(trigramtable[k]))
+            else:
+                # key does not exist put a '.' on the end and
+                # then generate a new key to start from
+                text_string.append('.')
+                words = random.choice(list(trigramtable.keys()))
+                words = words.split()
+                text_string.append(words[0])
+                text_string.append(words[1])
     # Throw a '.' on the end if there is not one there already.
     if text_string[-1] == '.':
         pass
