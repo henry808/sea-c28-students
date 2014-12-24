@@ -24,14 +24,13 @@ class Element(object):
         self.attributes = kwargs
         super(Element, self).__init__()
 
-    def getattributes(self):
+    def get_attributes(self):
         """Returns a string of attributes given an element
         """
-        # if not(len(self.attributes) == 0):
         if self.attributes:
             att_list = [' {}="{}"'.format(k, self.attributes[k])
                         for k in self.attributes]
-            return "; ".join(att_list)
+            return "".join(att_list)
         else:
             return ''
 
@@ -45,7 +44,7 @@ class Element(object):
 
         This is a recursive method that builds the html web page.
         """
-        att_string = self.getattributes()
+        att_string = self.get_attributes()
         file_out.write("{}<{}{}>\n".format(ind, self.tag, att_string))
         for content in self.content:
             if isinstance(content, unicode):
@@ -89,12 +88,13 @@ class OneLineTag(Element):
     tag = "OneLineTag"
 
     def render(self, file_out, ind=""):
-        att_string = self.getattributes()
-        file_out.write("{}<{}{}>{}</{}>\n".format(ind,
-                                                  self.tag,
-                                                  att_string,
-                                                  self.content[0],
-                                                  self.tag))
+        att_string = self.get_attributes()
+        for content in self.content:
+            file_out.write("{}<{}{}>{}</{}>\n".format(ind,
+                                                      self.tag,
+                                                      att_string,
+                                                      self.content[0],
+                                                      self.tag))
 
 
 class Title(OneLineTag):
@@ -109,7 +109,7 @@ class SelfClosingTag(Element):
     tag = "SelfClosingTag"
 
     def render(self, file_out, ind=""):
-        att_string = self.getattributes()
+        att_string = self.get_attributes()
         file_out.write("{}<{}{} />\n".format(ind, self.tag, att_string))
 
 
