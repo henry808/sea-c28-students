@@ -70,7 +70,6 @@ def prime():
         n += 1
 
 
-
 def square():
     """Generates a sequence of squares.
     """
