@@ -93,7 +93,7 @@ class OneLineTag(Element):
             file_out.write("{}<{}{}>{}</{}>\n".format(ind,
                                                       self.tag,
                                                       att_string,
-                                                      self.content[0],
+                                                      content,
                                                       self.tag))
 
 
