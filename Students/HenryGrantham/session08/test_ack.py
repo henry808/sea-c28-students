@@ -11,21 +11,21 @@ import pytest  # used for the exception testing
 import ack
 
 
-def test_illegal():
+def test_illegalnumber():
     """An illegal number should return None
     """
     assert ack.ack(-1, 0) is None
 
 
-def test_inputstr():
+def test_stringinsteadofint():
     """A string should raise a TypeError exception.
     """
     with pytest.raises(TypeError):
         assert ack.ack("test", 0)
 
 
-def test_inputstr0i():
-    """Test with 0 and i where i is 0 to 4
+def test_sequences():
+    """Test with first 5 elements of sequences 0 through 4.
     """
     mylist = [[1, 2, 3, 4, 5],
               [2, 3, 4, 5, 6],
