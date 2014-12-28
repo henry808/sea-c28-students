@@ -20,7 +20,7 @@ def intsum():
     while True:
         yield sum
         i += 1
-        sum = sum + i
+        sum += i
 
 
 def intsum2():
@@ -82,11 +82,10 @@ def square():
 def everythirdpowerofthree():
     """Generates a sequence every third number to the third power.
     """
-    n = 1
+    n = 3
     while True:
-        if n % 3 == 0:
-            yield n ** 3
-        n += 1
+        yield n ** 3
+        n += 3
 
 if __name__ == "__main__":
 
