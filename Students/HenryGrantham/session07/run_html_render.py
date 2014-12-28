@@ -194,7 +194,11 @@ page.append(head)
 
 body = hr.Body()
 
-body.append( hr.H(2, u"PythonClass - Class 6 example") )
+heading = hr.H(2, u"PythonClass - Class 6 example")
+heading.append(u"PythonClass 2nd line")
+heading.append(u"PythonClass 3nd line")
+
+body.append( heading )
 
 body.append(hr.P(u"Here is a paragraph of text -- there could be more of them, but this is enough  to show that we can do some text",
               style=u"text-align: center; font-style: oblique;"))
