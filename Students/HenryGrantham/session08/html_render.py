@@ -20,14 +20,13 @@ class Element(object):
     def __init__(self, element=None, **kwargs):
         self.content = []
         if element:
-            self.content.append(element)
+            self.content.append(unicode(element))
         self.attributes = kwargs
         super(Element, self).__init__()
 
     def getattributes(self):
         """Returns a string of attributes given an element
         """
-        # if not(len(self.attributes) == 0):
         if self.attributes:
             att_list = [' {}="{}"'.format(k, self.attributes[k])
                         for k in self.attributes]
@@ -104,7 +103,7 @@ class Title(OneLineTag):
 
 
 class SelfClosingTag(Element):
-    """A OneLineTag html element
+    """A SelfClosingTag html element
     """
     tag = "SelfClosingTag"
 
