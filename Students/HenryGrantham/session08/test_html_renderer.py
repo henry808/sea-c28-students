@@ -5,232 +5,383 @@ code that tests html_renderer.py module
 
 can be run with py.test
 """
-import codecs
+
 import cStringIO
 
 import pytest  # used for the exception testing
 
 import html_render as hr
 
-# writing the file out:
-def render(page, filename):
-   """
-   render the tree of elements
 
-   This uses cSstringIO to renderto memory, then dump to console and
-   write to file -- very handy!
-   """
-
-   f = cStringIO.StringIO()
-   page.render(f)
-
-   f.reset()
-
-   print f.read()
-
-   f.reset()
-   codecs.open(filename, 'w', encoding="utf-8").write( f.read() )
-
-# test step1
-def test_renderstep1():
-    """
-    render the tree of elements
-
-    This uses cSstringIO to renderto memory, then dump to console and
-    write to file -- very handy!
+def test_Element():
+    """Test Element
     """
     page = hr.Element()
 
-    page.append(u"Here is a paragraph of text -- there could be more of them, but this is enough  to show that we can do some text")
+    page.append(u"Here is a paragraph of text")
 
-    page.append(u"And here is another piece of text -- you should be able to add any number")
+    page.append(u"And here is another piece of text")
 
-    render(page, u"test_html_output1.html")
+    f = cStringIO.StringIO()
+    page.render(f)
+    rendered_string = f.getvalue()
 
-    print(page)
+    lines = [u"<>",
+             u"    Here is a paragraph of text",
+             u"    And here is another piece of text",
+             u"</>",
+             u""]
 
-    assert True
+    compare = "\n".join(lines)
 
+    # use this code to see what happens in the renderer.
+    # print('rendered_string:')
+    # print(rendered_string)
+    # print('compared string:')
+    # print(compare)
 
-# test step2
-def test_renderstep2():
-    page = hr.Html()
+    assert rendered_string == compare
 
-    body = hr.Body()
 
-    body.append(hr.P(u"Here is a paragraph of text -- there could be more of them, but this is enough  to show that we can do some text"))
+def test_ElementAttributes():
+    """Test Element Class with attributes
 
-    body.append(hr.P(u"And here is another piece of text -- you should be able to add any number"))
+    This tests attributes
+    """
+    page = hr.Element(u"This is a test.",
+                      style=u"text-align: center; font-style: oblique;")
+    page.append(u"And here is another piece of text")
+    page.append(u"And here is a second piece of text")
 
-    page.append(body)
+    f = cStringIO.StringIO()
+    page.render(f)
+    rendered_string = f.getvalue()
 
-    render(page, u"test_html_output2.html")
+    lines = [u'< style="text-align: center; font-style: oblique;">',
+             u"    This is a test.",
+             u"    And here is another piece of text",
+             u"    And here is a second piece of text",
+             u"</>",
+             u""]
 
-    assert True
+    compare = "\n".join(lines)
 
+    assert rendered_string == compare
 
-# test step3
-def test_renderstep3():
-    page = hr.Html()
 
-    head = hr.Head()
-    head.append(hr.Title(u"PythonClass = Revision 1087:"))
+def test_Body():
+    """Test Body Class with attributes
 
-    page.append(head)
+    This tests Body Class and attributes
+    """
+    page = hr.Body(u"This is a test.",
+                   style=u"text-align: center; font-style: oblique;")
+    page.append(u"And here is another piece of text")
 
-    body = hr.Body()
+    f = cStringIO.StringIO()
+    page.render(f)
+    rendered_string = f.getvalue()
 
-    body.append(hr.P(u"Here is a paragraph of text -- there could be more of them, but this is enough  to show that we can do some text"))
-    body.append(hr.P(u"And here is another piece of text -- you should be able to add any number"))
+    lines = [u'<body style="text-align: center; font-style: oblique;">',
+             u"    This is a test.",
+             u"    And here is another piece of text",
+             u"</body>",
+             u""]
 
-    page.append(body)
+    compare = "\n".join(lines)
 
-    render(page, u"test_html_output3.html")
+    assert rendered_string == compare
 
-    assert True
 
+def test_P():
+    """Test P Class with attributes
 
-# test step4
-def test_renderstep4():
-    page = hr.Html()
+    This tests P Class and attributes
+    """
+    page = hr.P(u"Here is a paragraph of text",
+                style=u"text-align: center; font-style: oblique;")
+    page.append(u"And here is another piece of text")
 
-    head = hr.Head()
-    head.append(hr.Title(u"PythonClass = Revision 1087:"))
+    f = cStringIO.StringIO()
+    page.render(f)
+    rendered_string = f.getvalue()
 
-    page.append(head)
+    lines = [u'<p style="text-align: center; font-style: oblique;">',
+             u"    Here is a paragraph of text",
+             u"    And here is another piece of text",
+             u"</p>",
+             u""]
 
-    body = hr.Body()
+    compare = "\n".join(lines)
 
-    body.append(hr.P(u"Here is a paragraph of text -- there could be more of them, but this is enough  to show that we can do some text",
-                  style=u"text-align: center; font-style: oblique;"))
+    assert rendered_string == compare
 
-    page.append(body)
 
-    render(page, u"test_html_output4.html")
+def test_Head():
+    """Test Head Class with attributes
 
-    assert True
+    This tests Head Class and attributes
+    """
+    page = hr.Head(u"This is a test.",
+                   style=u"text-align: center; font-style: oblique;")
+    page.append(u"And here is another piece of text")
 
+    f = cStringIO.StringIO()
+    page.render(f)
+    rendered_string = f.getvalue()
 
-# test step5
-def test_renderstep5():
-    page = hr.Html()
+    lines = [u'<head style="text-align: center; font-style: oblique;">',
+             u"    This is a test.",
+             u"    And here is another piece of text",
+             u"</head>",
+             u""]
 
-    head = hr.Head()
-    head.append(hr.Title(u"PythonClass = Revision 1087:"))
+    compare = "\n".join(lines)
 
-    page.append(head)
+    assert rendered_string == compare
 
-    body = hr.Body()
 
-    body.append(hr.P(u"Here is a paragraph of text -- there could be more of them, but this is enough  to show that we can do some text",
-                  style=u"text-align: center; font-style: oblique;"))
+def test_Ul():
+    """Test Ul Class with attributes
 
-    body.append(hr.Hr())
+    This tests Ul Class and attributes
+    """
+    page = hr.Ul(u"This is a test.",
+                 style=u"text-align: center; font-style: oblique;")
+    page.append(u"And here is another piece of text")
 
-    page.append(body)
+    f = cStringIO.StringIO()
+    page.render(f)
+    rendered_string = f.getvalue()
 
-    render(page, u"test_html_output5.html")
-    assert True
+    lines = [u'<ul style="text-align: center; font-style: oblique;">',
+             u"    This is a test.",
+             u"    And here is another piece of text",
+             u"</ul>",
+             u""]
 
+    compare = "\n".join(lines)
 
-# test step6
-def test_renderstep6():
-    page = hr.Html()
+    assert rendered_string == compare
 
-    head = hr.Head()
-    head.append(hr.Title(u"PythonClass = Revision 1087:"))
 
-    page.append(head)
+def test_Li():
+    """Test Li Class with attributes
 
-    body = hr.Body()
+    This tests Li Class and attributes
+    """
+    page = hr.Li(u"This is a test.",
+                 style=u"text-align: center; font-style: oblique;")
+    page.append(u"And here is another piece of text")
 
-    body.append(hr.P(u"Here is a paragraph of text -- there could be more of them, but this is enough  to show that we can do some text",
-                 style=u"text-align: center; font-style: oblique;"))
+    f = cStringIO.StringIO()
+    page.render(f)
+    rendered_string = f.getvalue()
 
-    body.append(hr.Hr())
+    lines = [u'<li style="text-align: center; font-style: oblique;">',
+             u"    This is a test.",
+             u"    And here is another piece of text",
+             u"</li>",
+             u""]
 
-    body.append(u"And this is a ")
-    body.append(hr.A(u"http://google.com", "link") )
-    body.append(u"to google")
+    compare = "\n".join(lines)
 
-    page.append(body)
+    assert rendered_string == compare
 
-    render(page, u"test_html_output6.html")
-    assert True
 
+def test_Html():
+    """Test Html Class with attributes
 
-# test step7
-def test_renderstep7():
-    page = hr.Html()
+    This tests Html Class and attributes
+    """
+    page = hr.Html(u"This is a test.",
+                   style=u"text-align: center; font-style: oblique;")
+    page.append(u"And here is another piece of text")
 
-    head = hr.Head()
-    head.append(hr.Title(u"PythonClass = Revision 1087:"))
+    f = cStringIO.StringIO()
+    page.render(f)
+    rendered_string = f.getvalue()
 
-    page.append(head)
+    lines = [u"<!DOCTYPE html>",
+             u'<html style="text-align: center; font-style: oblique;">',
+             u"    This is a test.",
+             u"    And here is another piece of text",
+             u"</html>",
+             u""]
 
-    body = hr.Body()
+    compare = "\n".join(lines)
 
-    body.append(hr.H(2, u"PythonClass - Class 6 example"))
+    assert rendered_string == compare
 
-    body.append(hr.P(u"Here is a paragraph of text -- there could be more of them, but this is enough  to show that we can do some text",
-                 style=u"text-align: center; font-style: oblique;"))
 
-    body.append(hr.Hr())
+def test_OneLineTag():
+    """Test OneLineTag Class with attributes
 
-    list = hr.Ul(id=u"TheList", style=u"line-height:200%")
+    This tests OneLineTag Class and attributes
+    """
+    page = hr.OneLineTag(u"This is a one line test.",
+                         style=u"text-align: center; font-style: oblique;")
 
-    list.append(hr.Li(u"The first item in a list"))
-    list.append(hr.Li(u"This is the second item", style="color: red"))
+    f = cStringIO.StringIO()
+    page.render(f)
+    rendered_string = f.getvalue()
 
-    item = hr.Li()
-    item.append(u"And this is a ")
-    item.append(hr.A(u"http://google.com", u"link"))
-    item.append(u"to google")
+    lines = [u'<OneLineTag style="text-align: center; font-style: oblique;">',
+             u"This is a one line test.",
+             u"</OneLineTag>"]
 
-    list.append(item)
+    compare = "{}\n".format("".join(lines))
 
-    body.append(list)
+    assert rendered_string == compare
 
-    page.append(body)
 
-    render(page, u"test_html_output7.html")
-    assert True
+def test_Title():
+    """Test Title Class with attributes
 
+    This tests Title Class and attributes
+    """
+    page = hr.Title(u"This is a one line test.",
+                    style=u"text-align: center; font-style: oblique;")
 
-# test step8
-def test_renderstep8():
-    page = hr.Html()
+    f = cStringIO.StringIO()
+    page.render(f)
+    rendered_string = f.getvalue()
 
-    head = hr.Head()
-    head.append(hr.Meta(charset=u"UTF-8"))
-    head.append(hr.Title(u"PythonClass = Revision 1087:"))
+    lines = [u'<title style="text-align: center; font-style: oblique;">',
+             u"This is a one line test.",
+             u"</title>"]
 
-    page.append(head)
+    compare = "{}\n".format("".join(lines))
 
-    body = hr.Body()
+    assert rendered_string == compare
 
-    body.append(hr.H(2, u"PythonClass - Class 6 example"))
 
-    body.append(hr.P(u"Here is a paragraph of text -- there could be more of them, but this is enough  to show that we can do some text",
-                 style=u"text-align: center; font-style: oblique;"))
+def test_H():
+    """Test Header Class with attributes
 
-    body.append(hr.Hr())
+    This tests Header Class and attributes
+    """
+    page = hr.H(4, u"This is a one line test.",
+                style=u"text-align: center; font-style: oblique;")
 
-    list = hr.Ul(id=u"TheList", style=u"line-height:200%")
+    f = cStringIO.StringIO()
+    page.render(f)
+    rendered_string = f.getvalue()
 
-    list.append(hr.Li(u"The first item in a list"))
-    list.append(hr.Li(u"This is the second item", style="color: red"))
+    lines = [u'<h4 style="text-align: center; font-style: oblique;">',
+             u"This is a one line test.",
+             u"</h4>"]
 
-    item = hr.Li()
-    item.append(u"And this is a ")
-    item.append(hr.A(u"http://google.com", "link"))
-    item.append(u"to google")
+    compare = "{}\n".format("".join(lines))
 
-    list.append(item)
+    assert rendered_string == compare
 
-    body.append(list)
 
-    page.append(body)
+def test_SelfClosingTag():
+    """Test SelfClosingTag Class with attributes
 
-    render(page, u"test_html_output8.html")
-    assert True
+    This tests SelfClosingTag Class and attributes
+    """
+    page = hr.SelfClosingTag(style=u"text-align: center; font-style: oblique;")
+
+    f = cStringIO.StringIO()
+    page.render(f)
+    rendered_string = f.getvalue()
+
+    lines = [u'<SelfClosingTag style="text-align: center; font-style: oblique;"',
+             u" />\n"]
+
+    compare = "{}".format("".join(lines))
+
+    assert rendered_string == compare
+
+
+def test_Hr():
+    """Test Hr Class with attributes
+
+    This tests Hr Class and attributes
+    """
+    page = hr.Hr(style=u"text-align: center; font-style: oblique;")
+
+    f = cStringIO.StringIO()
+    page.render(f)
+    rendered_string = f.getvalue()
+
+    lines = [u'<hr style="text-align: center; font-style: oblique;"',
+             u" />\n"]
+
+    compare = "{}".format("".join(lines))
+
+    assert rendered_string == compare
+
+
+def test_Br():
+    """Test Br Class with attributes
+
+    This tests Br Class and attributes
+    """
+    page = hr.Br(style=u"text-align: center; font-style: oblique;")
+
+    f = cStringIO.StringIO()
+    page.render(f)
+    rendered_string = f.getvalue()
+
+    lines = [u'<br style="text-align: center; font-style: oblique;"',
+             u" />\n"]
+
+    compare = "{}".format("".join(lines))
+
+    assert rendered_string == compare
+
+
+def test_Meta():
+    """Test Meta Class with attributes
+
+    This tests Meta Class and attributes
+    """
+    page = hr.Meta(style=u"text-align: center; font-style: oblique;")
+
+    f = cStringIO.StringIO()
+    page.render(f)
+    rendered_string = f.getvalue()
+
+    lines = [u'<meta style="text-align: center; font-style: oblique;"',
+             u" />\n"]
+
+    compare = "{}".format("".join(lines))
+
+    assert rendered_string == compare
+
+
+# Use this when implementing OneLineTag that works correctly.
+# I am going to fix this on another git branch (session07) where
+# the real html_renderer.py lives.
+#
+# def test_OneLineTag_Multiple_Elements():
+#     """Test OneLineTag Class with multiple elements and attributes
+
+#     This tests OneLineTag Class and attributes
+#     """
+#     page = hr.OneLineTag(u"This is a one line test.",
+#                          style=u"text-align: center; font-style: oblique;")
+#     # page.append(u"And here is another piece of text")
+
+#     f = cStringIO.StringIO()
+#     page.render(f)
+#     rendered_string = f.getvalue()
+
+#     lines = [u'<OneLineTag style="text-align: center; font-style: oblique;">',
+#              u"This is a one line test.",
+#     #         u"    And here is another piece of text",
+#              u"</OneLineTag>"]
+
+#     compare = "{}\n".format("".join(lines))
+
+#     print('rendered_string:')
+#     print(rendered_string)
+#     print('compared string:')
+#     print(compare)
+
+#     assert rendered_string == compare
+    # <a href="someplace.html">There is a <span class="funny">styled sub-element</span>
+
