@@ -418,18 +418,11 @@ def test_OneLineTag_Multiple_Elements():
 
     compare = "{}\n".format("".join(lines))
 
-    print('rendered_string:')
-    print(rendered_string)
-    print('compared string:')
-    print(compare)
-
     assert rendered_string == compare
 
 
 def test_OneLineTag_Nested_Elements():
-    """Test an A Class that represents a link
-
-    This tests the A Class
+    """Test OneLineTag Class with Span instance nested in an A class (link)
     """
     page = hr.A(u"http://google.com", "There is a")
     page.append(hr.Span(u"styled sub-element", style=u"funny"))
@@ -451,13 +444,13 @@ def test_OneLineTag_Nested_Elements():
     assert rendered_string == compare
 
 
-def test_OneLineTag_Nested_P():
-    """Test an A Class that represents a link
-
-    This tests the A Class
+def test_OneLineTag_Double_Nested_Elements():
+    """Taking it too far.
     """
+    span = hr.Span(u"styled sub-element", style=u"funny")
+    span.append(hr.Title(u"inside"))
     page = hr.A(u"http://google.com", "There is a")
-    page.append(hr.P(u"styled sub-element", style=u"funny"))
+    page.append(span)
 
     f = cStringIO.StringIO()
     page.render(f)
@@ -467,6 +460,7 @@ def test_OneLineTag_Nested_P():
              u"There is a",
              u'<span style="funny">',
              u'styled sub-element',
+             u'<title>inside</title>',         
              u"</span>",
              u"</a>"]
 
@@ -480,30 +474,15 @@ def test_OneLineTag_Nested_P():
     assert isinstance(page, hr.A)
     assert rendered_string == compare
 
+def test_OneLineTag_Nested_P():
+    """Test OneLineTag Class with P instance nested in an A class (link)
 
-# def test_OneLineTag_Multiple_Elements():
-#     """Test OneLineTag Class with multiple elements and attributes
+    This illegal call should raise an AttributeError because you cannot put a
+    multilined Element in a OneLineTag.
+    """
+    page = hr.A(u"http://google.com", "There is a")
+    page.append(hr.P(u"Paragraph", style=u"funny"))
 
-#     This tests OneLineTag Class and attributes
-#     """
-#     page = hr.OneLineTag(u"One line test.",
-#                          style=u"text-align: center; font-style: oblique;")
-#     page.append(u"Another piece of text")
-
-#     f = cStringIO.StringIO()
-#     page.render(f)
-#     rendered_string = f.getvalue()
-
-#     lines = [u'<OneLineTag style="text-align: center; font-style: oblique;">',
-#              u"One line test.",
-#              u"Another piece of text",
-#              u"</OneLineTag>"]
-
-#     compare = "{}\n".format("".join(lines))
-
-#     print('rendered_string:')
-#     print(rendered_string)
-#     print('compared string:')
-#     print(compare)
-
-#     assert rendered_string == compare
+    f = cStringIO.StringIO()
+    with pytest.raises(AttributeError):
+        page.render(f)
