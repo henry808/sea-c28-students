@@ -20,17 +20,17 @@ class Element(object):
     def __init__(self, element=None, **kwargs):
         self.content = []
         if element:
-            self.content.append(element)
+            self.content.append(unicode(element))
         self.attributes = kwargs
         super(Element, self).__init__()
 
-    def get_attributes(self):
+    def getattributes(self):
         """Returns a string of attributes given an element
         """
         if self.attributes:
             att_list = [' {}="{}"'.format(k, self.attributes[k])
                         for k in self.attributes]
-            return "".join(att_list)
+            return "; ".join(att_list)
         else:
             return ''
 
@@ -44,7 +44,7 @@ class Element(object):
 
         This is a recursive method that builds the html web page.
         """
-        att_string = self.get_attributes()
+        att_string = self.getattributes()
         file_out.write("{}<{}{}>\n".format(ind, self.tag, att_string))
         for content in self.content:
             if isinstance(content, unicode):
@@ -88,13 +88,28 @@ class OneLineTag(Element):
     tag = "OneLineTag"
 
     def render(self, file_out, ind=""):
-        att_string = self.get_attributes()
+        file_out.write(ind)
+        self.render_one_line(file_out, "")
+        file_out.write("\n")
+
+    def render_one_line(self, file_out, ind=""):
+        att_string = self.getattributes()
+        file_out.write("{}<{}{}>".format(ind, self.tag, att_string))
         for content in self.content:
-            file_out.write("{}<{}{}>{}</{}>\n".format(ind,
-                                                      self.tag,
-                                                      att_string,
-                                                      content,
-                                                      self.tag))
+            if isinstance(content, unicode):
+                file_out.write("{}".format(content))
+            else:
+                content.render_one_line(file_out, "")
+        file_out.write("</{}>".format(self.tag))
+
+
+ 
+
+       # file_out.write("{}<{}{}>{}</{}>\n".format(ind,
+       #                                            self.tag,
+       #                                            att_string,
+       #                                            self.content[0],
+       #                                            self.tag))
 
 
 class Title(OneLineTag):
@@ -103,13 +118,19 @@ class Title(OneLineTag):
     tag = "title"
 
 
-class SelfClosingTag(Element):
+class Span(OneLineTag):
     """A OneLineTag html element
+    """
+    tag = "span"
+
+
+class SelfClosingTag(Element):
+    """A SelfClosingTag html element
     """
     tag = "SelfClosingTag"
 
     def render(self, file_out, ind=""):
-        att_string = self.get_attributes()
+        att_string = self.getattributes()
         file_out.write("{}<{}{} />\n".format(ind, self.tag, att_string))
 
 
