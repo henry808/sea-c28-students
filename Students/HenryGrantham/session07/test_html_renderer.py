@@ -394,10 +394,6 @@ def test_Meta():
     assert rendered_string == compare
 
 
-# Use this when implementing OneLineTag that works correctly.
-# I am going to fix this on another git branch (session07) where
-# the real html_renderer.py lives.
-
 def test_OneLineTag_Multiple_Elements():
     """Test OneLineTag Class with multiple elements and attributes
 
@@ -425,7 +421,8 @@ def test_OneLineTag_Nested_Elements():
     """Test OneLineTag Class with Span instance nested in an A class (link)
     """
     page = hr.A(u"http://google.com", "There is a")
-    page.append(hr.Span(u"styled sub-element", style=u"funny"))
+    attr = {'class': u"funny"}
+    page.append(hr.Span(u"styled sub-element", **attr))
 
     f = cStringIO.StringIO()
     page.render(f)
@@ -433,7 +430,7 @@ def test_OneLineTag_Nested_Elements():
 
     lines = [u'<a href="http://google.com">',
              u"There is a",
-             u'<span style="funny">',
+             u'<span class="funny">',
              u'styled sub-element',
              u"</span>",
              u"</a>"]
@@ -460,7 +457,7 @@ def test_OneLineTag_Double_Nested_Elements():
              u"There is a",
              u'<span style="funny">',
              u'styled sub-element',
-             u'<title>inside</title>',         
+             u'<title>inside</title>',
              u"</span>",
              u"</a>"]
 
@@ -473,6 +470,7 @@ def test_OneLineTag_Double_Nested_Elements():
 
     assert isinstance(page, hr.A)
     assert rendered_string == compare
+
 
 def test_OneLineTag_Nested_P():
     """Test OneLineTag Class with P instance nested in an A class (link)
