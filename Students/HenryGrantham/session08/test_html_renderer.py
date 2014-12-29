@@ -40,6 +40,7 @@ def test_Element():
     # print('compared string:')
     # print(compare)
 
+    assert isinstance(page, hr.Element)
     assert rendered_string == compare
 
 
@@ -66,6 +67,7 @@ def test_ElementAttributes():
 
     compare = "\n".join(lines)
 
+    assert isinstance(page, hr.Element)
     assert rendered_string == compare
 
 
@@ -90,6 +92,7 @@ def test_Body():
 
     compare = "\n".join(lines)
 
+    assert isinstance(page, hr.Body)
     assert rendered_string == compare
 
 
@@ -114,6 +117,7 @@ def test_P():
 
     compare = "\n".join(lines)
 
+    assert isinstance(page, hr.P)
     assert rendered_string == compare
 
 
@@ -138,6 +142,7 @@ def test_Head():
 
     compare = "\n".join(lines)
 
+    assert isinstance(page, hr.Head)
     assert rendered_string == compare
 
 
@@ -162,6 +167,7 @@ def test_Ul():
 
     compare = "\n".join(lines)
 
+    assert isinstance(page, hr.Ul)
     assert rendered_string == compare
 
 
@@ -186,6 +192,7 @@ def test_Li():
 
     compare = "\n".join(lines)
 
+    assert isinstance(page, hr.Li)
     assert rendered_string == compare
 
 
@@ -211,6 +218,7 @@ def test_Html():
 
     compare = "\n".join(lines)
 
+    assert isinstance(page, hr.Html)
     assert rendered_string == compare
 
 
@@ -232,6 +240,7 @@ def test_OneLineTag():
 
     compare = "{}\n".format("".join(lines))
 
+    assert isinstance(page, hr.OneLineTag)
     assert rendered_string == compare
 
 
@@ -253,6 +262,7 @@ def test_Title():
 
     compare = "{}\n".format("".join(lines))
 
+    assert isinstance(page, hr.Title)
     assert rendered_string == compare
 
 
@@ -274,6 +284,7 @@ def test_H():
 
     compare = "{}\n".format("".join(lines))
 
+    assert isinstance(page, hr.H)
     assert rendered_string == compare
 
 
@@ -293,6 +304,7 @@ def test_SelfClosingTag():
 
     compare = "{}".format("".join(lines))
 
+    assert isinstance(page, hr.SelfClosingTag)
     assert rendered_string == compare
 
 
@@ -312,6 +324,7 @@ def test_Hr():
 
     compare = "{}".format("".join(lines))
 
+    assert isinstance(page, hr.Hr)
     assert rendered_string == compare
 
 
@@ -331,6 +344,7 @@ def test_Br():
 
     compare = "{}".format("".join(lines))
 
+    assert isinstance(page, hr.Br)
     assert rendered_string == compare
 
 
@@ -350,6 +364,7 @@ def test_Meta():
 
     compare = "{}".format("".join(lines))
 
+    assert isinstance(page, hr.Meta)
     assert rendered_string == compare
 
 
